@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kiana.unic.mapper.UserMapper">
+    <insert id="insertUser" parameterType="cn.kiana.unic.pojo.User">
+        insert into user(u_phone,u_password)
+        value (#{phone},#{password})
+    </insert>
+    <update id="updateUser" parameterType="cn.kiana.unic.pojo.User">
+        update user
+        set u_name = #{name},u_img = #{img},u_birthday = #{birthday},gender = #{gender},u_address = #{address}
+        where u_phone = #{phone}
+    </update>
+
+    <select id="getUserByPhone" resultType="cn.kiana.unic.pojo.User">
+        select id,u_address address, u_password password, u_name name, u_phone phone, gender gender, u_img img, u_birthday birthday, u_register register
+        from user
+        where u_phone = #{phone}
+    </select>
+</mapper>
+
+<!--        private int id;-->
+<!--        private String password;-->
+<!--        private String name;-->
+<!--        private String phone;-->
+<!--        private char gender;-->
+<!--        private String img;-->
+<!--        private String birthday;-->
+<!--        private String register;-->
+<!--        public User() {}-->

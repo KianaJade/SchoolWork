@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kiana.unic.mapper.GoodsMapper">
+    <insert id="addGoods" parameterType="cn.kiana.unic.pojo.Goods"  useGeneratedKeys="true" keyProperty="id">
+        insert into goods(g_name, g_price, g_number, s_id, c3_name, g_imgNum, g_img1, g_img2, g_img3, g_img4, g_img5)
+        values (#{name},#{price},#{number},#{shopID},#{class3},#{imgNumber},#{goodsImg1},#{goodsImg2},#{goodsImg3},#{goodsImg4},#{goodsImg5})
+    </insert>
+    <insert id="addGoodsType" parameterType="cn.kiana.unic.pojo.GoodsType" useGeneratedKeys="true" keyProperty="goodsTypeId">
+        insert into goodstype(t_name, g_id)
+        values (#{goodsTypeName},#{goodsId})
+    </insert>
+    <insert id="addTypeTag" parameterType="cn.kiana.unic.pojo.TypeTag" useGeneratedKeys="true" keyProperty="tagID">
+        insert into tag(tag_name, t_id)
+        values (#{tagName},#{typeID})
+    </insert>
+
+
+    <insert id="addGoodsClass1" parameterType="cn.kiana.unic.pojo.GoodsClass">
+        insert into class1(c1_name)
+        values (#{className})
+    </insert>
+    <insert id="addGoodsClass2" parameterType="cn.kiana.unic.pojo.GoodsClass">
+        insert into class2(c2_name, c1_name)
+        values (#{className},#{classNameLast})
+    </insert>
+    <insert id="addGoodsClass3" parameterType="cn.kiana.unic.pojo.GoodsClass">
+        insert into class3(c3_name, c2_name)
+        values (#{className},#{classNameLast})
+    </insert>
+
+
+    <update id="updateGoodsClass1" parameterType="cn.kiana.unic.pojo.GoodsClass">
+        update class1
+        set c1_name = #{classNewName}
+        where c1_name = #{className}
+    </update>
+    <update id="updateGoodsClass2" parameterType="cn.kiana.unic.pojo.GoodsClass">
+        update class2
+        set c2_name = #{classNewName}
+        where c2_name = #{className}
+    </update>
+    <update id="updateGoodsClass3" parameterType="cn.kiana.unic.pojo.GoodsClass">
+        update class3
+        set c3_name = #{classNewName}
+        where c3_name = #{className}
+    </update>
+
+    <delete id="deleteGoodsClass1" parameterType="cn.kiana.unic.pojo.GoodsClass">
+        delete from class1
+        where c1_name = #{className}
+    </delete>
+    <delete id="deleteGoodsClass2" parameterType="cn.kiana.unic.pojo.GoodsClass">
+        delete from class2
+        where c2_name = #{className}
+    </delete>
+    <delete id="deleteGoodsClass3" parameterType="cn.kiana.unic.pojo.GoodsClass">
+        delete from class3
+        where c3_name = #{className}
+    </delete>
+
+    <select id="getGoodsClass1" resultType="cn.kiana.unic.pojo.GoodsClass">
+        select c1_name className
+        from class1
+    </select>
+    <select id="getGoodsClass2" resultType="cn.kiana.unic.pojo.GoodsClass">
+        select c2_name className
+        from class2
+        where c1_name = #{className}
+    </select>
+    <select id="getGoodsClass3" resultType="cn.kiana.unic.pojo.GoodsClass">
+        select c3_name className
+        from class3
+        where c2_name = #{className}
+    </select>
+
+    <select id="getClass1Num" resultType="int">
+        select count(*)
+        from class1
+    </select>
+    <select id="getClass2Num" resultType="int">
+        select count(*)
+        from class2
+    </select>
+    <select id="getClass3Num" resultType="int">
+        select count(*)
+        from class3
+    </select>
+
+    <select id="getGoodsById" resultType="cn.kiana.unic.pojo.Goods">
+        select g_id id, g_name name,g_sellNum sellNumber, g_price price, g_number number, s_id shopID, c3_name class3, g_imgNum imgNumber, g_img1 goodsImg1, g_img2 goodsImg2, g_img3 goodsImg3, g_img4 goodsImg4, g_img5 goodsImg5
+        from goods
+        where g_id = #{goodsId}
+    </select>
+    <select id="getGoodsByStart" resultType="cn.kiana.unic.pojo.Goods">
+        select g_id id, g_name name,g_sellNum sellNumber, g_price price, g_img1 goodsImg1
+        from goods
+        LIMIT #{start},#{limit}
+    </select>
+    <select id="getGoodsTypeByID" resultType="cn.kiana.unic.pojo.GoodsType">
+        select t_id goodsTypeId, t_name goodsTypeName
+        from goodstype
+        where g_id = #{goodsId}
+    </select>
+    <select id="getTypeTagsList" resultType="cn.kiana.unic.pojo.TypeTag">
+        select tag_id tagID, tag_name tagName
+        from tag
+        where t_id = #{typeID}
+    </select>
+
+    <select id="getGoodsByPhone" resultType="cn.kiana.unic.pojo.Goods">
+        select g_id id, g_name name,g_sellNum sellNumber, g_price price, g_number number, c3_name class3, g_imgNum imgNumber, g_img1 goodsImg1, g_img2 goodsImg2, g_img3 goodsImg3, g_img4 goodsImg4, g_img5 goodsImg5
+        from goods,user,shop
+        where user.u_phone = #{phone} AND user.id = shop.id AND goods.s_id = shop.s_id
+    </select>
+
+</mapper>

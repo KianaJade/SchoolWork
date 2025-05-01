@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kiana.unic.mapper.OrderMapper">
+    <insert id="insertOrder" parameterType="cn.kiana.unic.pojo.GoodsOrder"  useGeneratedKeys="true" keyProperty="id">
+        insert into goodsorder(o_number, o_totalPrice, o_singlePrice, o_status, g_id, id)
+        values (#{number},#{totalPrice},#{singlePrice},#{status},#{goodsId},#{userId})
+    </insert>
+    <insert id="insertOrderTag">
+        insert into ordertag(o_id, tag_id)
+        values (#{orderId},#{tagId})
+    </insert>
+
+    <update id="updateOrderStatus">
+        update goodsorder
+        set o_status = #{status}
+        where o_id = #{orderId}
+    </update>
+
+    <select id="selectShopOrders" resultType="cn.kiana.unic.pojo.GoodsOrder">
+        select goodsorder.o_id id,goods.g_id goodsId, goods.g_name goodsName, goods.g_img1 img1, goodsorder.o_time orderTime, goodsorder.o_number number, goodsorder.o_totalPrice totalPrice, goodsorder.o_singlePrice singlePrice, goodsorder.o_status status, goodsorder.g_id goodsId
+        from goods,user,shop,goodsorder
+        where user.u_phone = #{phone} AND shop.id = user.id AND goods.s_id =shop.s_id AND goodsorder.g_id = goods.g_id AND goodsorder.o_status != 0
+    </select>
+    <select id="selectOrderTags" resultType="java.lang.String">
+        select tag.tag_name
+        from tag,ordertag
+        where #{orderId} = ordertag.o_id AND ordertag.tag_id = tag.tag_id
+    </select>
+    <select id="selectUserOrders" resultType="cn.kiana.unic.pojo.GoodsOrder">
+        select goodsorder.o_id id,goods.g_id goodsId, goods.g_name goodsName, goods.g_img1 img1, goodsorder.o_time orderTime, goodsorder.o_number number, goodsorder.o_totalPrice totalPrice, goodsorder.o_singlePrice singlePrice, goodsorder.o_status status, goodsorder.g_id goodsId
+        from goods,user,goodsorder
+        where user.u_phone = #{phone} AND goodsorder.id = user.id AND goodsorder.g_id = goods.g_id
+    </select>
+</mapper>

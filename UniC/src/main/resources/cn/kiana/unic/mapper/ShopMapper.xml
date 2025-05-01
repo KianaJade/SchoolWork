@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.kiana.unic.mapper.ShopMapper">
+    <insert id="insertShop">
+        insert into shop(id)
+        values (#{userID})
+    </insert>
+    <update id="updateShop">
+        update shop
+        set s_img = #{img}, s_name = #{name}, s_des = #{des}, s_address = #{address}
+        where  s_id = #{id}
+    </update>
+
+    <select id="selectByUserID" resultType="cn.kiana.unic.pojo.Shop">
+        select s_id id, id userID, s_img img, s_name name, s_des des, s_address address,s_time createTime
+        from shop
+        where id = #{ID}
+    </select>
+    <select id="selectShopByID" resultType="cn.kiana.unic.pojo.Shop">
+        select s_id id, id userID, s_img img, s_name name, s_des des, s_address address,s_time createTime
+        from shop
+        where s_id = #{ID}
+    </select>
+</mapper>
